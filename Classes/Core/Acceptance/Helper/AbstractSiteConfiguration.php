@@ -36,22 +36,21 @@ abstract class AbstractSiteConfiguration
 
     /**
      * @var AcceptanceTester
-     * 
+     *
      * currently unused, but let's keep it for the time being. It will come in handy.
      */
     protected $tester;
 
     public function adjustSiteConfiguration(): void
     {
-        $sitesDir = __DIR__ . '/../../../../../../../typo3temp/var/tests/acceptance/typo3conf/sites';
-        $siteConfiguration = new SiteConfiguration($sitesDir);
+        $sitesDir = ORIGINAL_ROOT . 'typo3temp/var/tests/acceptance/typo3conf/sites';
         $scandir = scandir($sitesDir);
         if (!empty($scandir)) {
             $identifer = end(array_diff($scandir, ['.', '..']));
         } else {
             $identifer = 'local-testing';
         }
-        
+
         $configuration = $this->buildSiteConfiguration(1, '/');
         $configuration += [
             'langugages' => [
@@ -59,7 +58,7 @@ abstract class AbstractSiteConfiguration
                 $this->buildLanguageConfiguration('DK', '/dk/')
             ],
         ];
-        
+
        $siteConfiguration = new SiteConfiguration($sitesDir);
        $siteConfiguration->write($identifer, $configuration);
     }
